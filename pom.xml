@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.vasiliev.test.userapp</groupId>
+    <artifactId>com.vasiliev.test.userapp</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.10.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <swagger-codegen-base-package>com.vasiliev.test.userapp</swagger-codegen-base-package>
+        <springfox.swagger.version>2.5.0</springfox.swagger.version>
+        <jackson-version>2.8.4</jackson-version>
+    </properties>
+
+    <dependencies>
+        <!-- SPRING -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- THYMELEAF FE -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- SWAGGER -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-core</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spi</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+
+        <!-- JSON processing: jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-codegen-maven-plugin</artifactId>
+                        <version>2.3.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>src/main/resources/swagger/api.yaml</inputSpec>
+                                    <language>spring</language>
+                                    <invokerPackage>${swagger-codegen-base-package}</invokerPackage>
+                                    <!--<packageName>${swagger-codegen-base-package}</packageName>-->
+                                    <modelPackage>${swagger-codegen-base-package}.model</modelPackage>
+                                    <apiPackage>${swagger-codegen-base-package}.controller</apiPackage>
+                                    <generateApiTests>true</generateApiTests>
+                                    <generateModelDocumentation>true</generateModelDocumentation>
+                                    <generateApiDocumentation>true</generateApiDocumentation>
+                                    <configOptions>
+                                        <sourceFolder>.</sourceFolder>
+                                        <basePackage>${swagger-codegen-base-package}</basePackage>
+                                        <configPackage>${swagger-codegen-base-package}.config</configPackage>
+                                        <generateSupportingFiles>false</generateSupportingFiles>
+                                        <useBeanValidation>true</useBeanValidation>
+                                        <dateLibrary>java8</dateLibrary>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>generate-static-html</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <language>html</language>
+                                    <inputSpec>src/main/resources/swagger/api.yaml</inputSpec>
+                                    <output>${project.build.directory}/docs/swagger/</output>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>remove-swagger-generated-trash</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <tasks>
+                                        <delete>
+                                            <fileset dir="${project.build.directory}/generated-sources/swagger">
+                                                <exclude name="**/model/*.java"/>
+                                                <exclude name="**/controller/*Api.java"/>
+                                            </fileset>
+                                        </delete>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>com.tsystems.javaschool.rest.Swagger2SpringBoot</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

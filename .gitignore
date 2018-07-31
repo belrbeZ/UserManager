@@ -1,52 +1,31 @@
-# Prerequisites
-*.d
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
 
-# Linker output
-*.ilk
-*.map
-*.exp
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
-# Precompiled Headers
-*.gch
-*.pch
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+### logs ###
+logs/
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+### maven ###
+maven-wrapper*
+mvnw*

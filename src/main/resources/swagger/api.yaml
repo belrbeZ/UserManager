@@ -1,0 +1,207 @@
+swagger: '2.0'
+
+# Section: base API information
+info:
+  version: '0.2.0'
+  title: Test User Management
+
+  description: |
+    This API describers the User Management service, which is used to manage users, loginns in the system.
+
+    [Email](alexandrvasilievby@gmail.com)
+    [GitHub](https://github.com/belrbeZ)
+
+  contact:
+    name: Vasiliev Alexander
+    email: alexandrvasilievby@gmail.com
+    url: https://github.com/belrbeZ
+
+host: localhost:8000
+basePath: /usermanagement/1.0
+
+schemes:
+  - http
+
+tags:
+  - name: users
+    description: functions to manage users
+
+# Section: API endpoints
+paths:
+  /user/list:
+    get:
+      tags:
+        - users
+      description: |
+        This service provides all available users.
+      summary: Retrieve all available users
+      operationId: getUserList
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Users list successfully read.
+          schema:
+            $ref: '#/definitions/OperationResultWithUserList'
+        default:
+          $ref: '#/responses/Error'
+  /user:
+    post:
+      tags:
+        - users
+      description: |
+        Use this method to create user
+      summary: Create user
+      operationId: createUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userInvoice
+          in: body
+          description: An invoice for creating a new user
+          required: true
+          schema:
+              $ref: "#/definitions/User"
+      responses:
+        '201':
+          description: User was successfully created. Id is provided in response.
+          schema:
+            $ref: '#/definitions/OperationResultWithUser'
+          examples:
+            'application/json':
+              objectId: "59a439cdb7e6bc3c44155e87"
+        default:
+          $ref: '#/responses/Error'
+
+
+  /user/{id}:
+    get:
+      description: Retrieves an existing user by its ID
+      operationId: getUser
+      tags:
+        - users
+      parameters:
+        - name: id
+          maxLength: 128
+          in: path
+          required: true
+          type: string
+          description: |
+            Unique id of user.
+      responses:
+        '200':
+          description: The requested user
+          schema:
+            $ref: '#/definitions/OperationResultWithUser'
+        default:
+          $ref: '#/responses/Error'
+
+    put:
+      description: Updates an existing user
+      operationId: updateUser
+      tags:
+        - users
+      parameters:
+        - name: id
+          maxLength: 128
+          in: path
+          required: true
+          type: string
+          description: |
+            Unique id of user.
+        - name: userUpdateInvoice
+          in: body
+          description: An invoice for updating the user
+          required: true
+          schema:
+              $ref: "#/definitions/User"
+      responses:
+        '200':
+          description: The updated user
+          schema:
+            $ref: '#/definitions/OperationResultWithUser'
+        default:
+          $ref: '#/responses/Error'
+
+# Section: API models
+definitions:
+
+  OperationResult:
+    properties:
+      statusCode:
+        type: integer
+        description: the status code of this operation result
+      description:
+        type: string
+        description: a brief description of this operation result
+    required:
+      - statusCode
+
+  OperationResultWithUser:
+    allOf:
+      - $ref: '#/definitions/OperationResult'
+      - type: object
+        properties:
+          content:
+            $ref: '#/definitions/User'
+        required:
+          - content
+
+  OperationResultWithUserList:
+    allOf:
+      - $ref: '#/definitions/OperationResult'
+      - type: object
+        properties:
+          content:
+            $ref: '#/definitions/UserList'
+        required:
+          - content
+
+  UserList:
+    type: array
+    items:
+      $ref: '#/definitions/User'
+
+  User:
+    type: object
+    required:
+      - email
+    properties:
+      phoneNumber:
+        type: string
+        pattern: ^(|[\d+()]*\d+[\d+()]*)$  # empty string or digits and () validation
+        maxLength: 255
+        description: |
+            Users phone number.
+      id:
+        type: string
+        maxLength: 36
+        description: |
+            Id of user.
+      email:
+        type: string
+        pattern: ^[\w\._-]+@[\w\._-]+\.\w+$
+        maxLength: 255
+        description: |
+            E-mail address of user. Used as usernam/login, during login
+      emailVerified:
+        type: boolean
+        description: |
+            Indicator, that syas, if e-mail is verified.
+      enabled:
+        type: boolean
+        description: |
+            Indicator, that syas, if user is enabled.
+      createdAt:
+        type: string
+        description: |
+            Date and time the user was created, Date in format `YYYY-MM-dd HH:mm:ss`. E.g.: 2017-07-01 23:34:56
+
+responses:
+
+  Error:
+    description: An occured exception situation
+    schema:
+      $ref: '#/definitions/OperationResult'
