@@ -248,6 +248,27 @@ definitions:
         description: |
             New user password.
 
+  UserManageEvent:
+    type: object
+    required:
+      - uuid
+      - eventType
+    properties:
+      uuid:
+        type: string
+        maxLength: 32
+        description: |
+            Uuid of user with changes.
+      eventType:
+        type: string
+        enum: &EVENT_TYPE
+          - CREATED
+          - MODIFIED
+      date:
+        type: string
+        format: date-time
+        description: Date-time of an envent
+
 responses:
 
   Error:

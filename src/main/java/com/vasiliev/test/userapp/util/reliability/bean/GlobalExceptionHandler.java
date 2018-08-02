@@ -10,11 +10,11 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 
 import static com.vasiliev.test.userapp.util.reliability.OperationResultStatus.FAILURE_INTERNAL_UNKNOWN;
 import static com.vasiliev.test.userapp.util.reliability.OperationResultStatus.FAILURE_VALIDATION;
@@ -81,11 +81,9 @@ class GlobalExceptionHandler {
                 .response();
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public void handleLoginException(final Exception exception) throws Exception {
+    @ExceptionHandler(AsyncRequestTimeoutException.class)
+    public void handleException(final AsyncRequestTimeoutException exception) {
         logger.warn(exception);
-        exception.printStackTrace();
-        throw exception;
     }
 
     @ExceptionHandler(Exception.class)

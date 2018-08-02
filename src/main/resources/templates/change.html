@@ -1,196 +1,131 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII"/>
     <title th:text="#{label.form.title}">form</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
     <style>
-        .password-verdict{
-            color:#000;
+        .password-verdict {
+            color: #000;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" th:href="@{/home.html}" th:text="#{label.pages.home.title}">home</a>
-            </div>
-            <div sec:authorize="isAuthenticated()" class="">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a> </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home.html}" th:text="#{label.pages.home.title}">home</a>
         </div>
-    </nav>
-    <div class="container">
-        <div >
-            <h1 th:text="#{label.form.change.title}">form</h1>
-            <br/>
-            <form  class="form-horizontal" th:action="@{/user/{id}(id=${user.id})}"
-                  th:object="${user}" role="form">
-                <input type="hidden" th:field="${user.id}"/>
+        <div sec:authorize="isAuthenticated()" class="">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div>
+        <h1 th:text="#{label.form.change.title}">form</h1>
+        <br/>
+        <form class="form-horizontal" th:action="@{/user/{id}(id=${user.id})}"
+              th:object="${user}" role="form">
+            <input type="hidden" th:field="${user.id}"/>
 
-                <fieldset>
+            <fieldset>
 
-                    <legend>Account</legend>
+                <legend>Account</legend>
 
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="firstName_input" th:text="#{label.user.firstName}">First Name</label>
-                        <div class="col-md-4">
-                            <input id="firstName_input" class="form-control input-md" type="text" th:field="*{firstName}"
-                                   th:placeholder="#{label.user.firstName}" />
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="firstName_input" th:text="#{label.user.firstName}">First
+                        Name</label>
+                    <div class="col-md-4">
+                        <input id="firstName_input" class="form-control input-md" type="text" th:field="*{firstName}"
+                               th:placeholder="#{label.user.firstName}"/>
 
-                            <span class="help-block">
+                        <span class="help-block">
                                 <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
                                        class="validation-message"></label>
                             </span>
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="lastName_input" th:text="#{label.user.lastName}">Last Name</label>
-                        <div class="col-md-4">
-                            <input id="lastName_input" class="form-control input-md" type="text" th:field="*{lastName}"
-                                   th:placeholder="#{label.user.lastName}" />
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="lastName_input" th:text="#{label.user.lastName}">Last
+                        Name</label>
+                    <div class="col-md-4">
+                        <input id="lastName_input" class="form-control input-md" type="text" th:field="*{lastName}"
+                               th:placeholder="#{label.user.lastName}"/>
 
-                            <span class="help-block">
+                        <span class="help-block">
                                 <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
                                        class="validation-message"></label>
                             </span>
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="phoneNumber_input" th:text="#{label.user.phoneNumber}">PhoneNumber</label>
-                        <div class="col-md-4">
-                            <input id="phoneNumber_input" class="form-control input-md" type="text" th:field="*{phoneNumber}"
-                                   th:placeholder="#{label.user.phoneNumber}" />
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="phoneNumber_input" th:text="#{label.user.phoneNumber}">PhoneNumber</label>
+                    <div class="col-md-4">
+                        <input id="phoneNumber_input" class="form-control input-md" type="text"
+                               th:field="*{phoneNumber}"
+                               th:placeholder="#{label.user.phoneNumber}"/>
 
-                            <span class="help-block">
+                        <span class="help-block">
                                 <label th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
                                        class="validation-message"></label>
                             </span>
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="email_input"  th:text="#{label.user.email}">Email</label>
-                        <div class="col-md-4">
-                            <input id="email_input" class="form-control input-md" type="text" th:field="*{email}"
-                                   th:placeholder="#{label.user.email}" />
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="email_input" th:text="#{label.user.email}">Email</label>
+                    <div class="col-md-4">
+                        <input id="email_input" class="form-control input-md" type="text" th:field="*{email}"
+                               th:placeholder="#{label.user.email}"/>
 
-                            <span id="emailError" class="alert alert-danger col-sm-12" style="display:none"></span>
-                            <span class="help-block">
+                        <span id="emailError" class="alert alert-danger col-sm-12" style="display:none"></span>
+                        <span class="help-block">
                                 <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
                                        class="validation-message"></label>
                             </span>
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="enabled_input" th:text="#{label.user.enabled}">Enabled</label>
-                        <div class="col-md-4">
-                            <input id="enabled_input" class="form-control input-md" type="checkbox" th:checked="*{enabled}"
-                                   th:placeholder="#{label.user.enabled}" />
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="enabled_input"
+                           th:text="#{label.user.enabled}">Enabled</label>
+                    <div class="col-md-4">
+                        <input id="enabled_input" class="form-control input-md" type="checkbox" th:checked="*{enabled}"
+                               th:placeholder="#{label.user.enabled}"/>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="button_input"></label>
-                        <div class="col-md-4">
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="button_input"></label>
+                    <div class="col-md-4">
                             <span class="help-block">
                                 <span th:utext="${successMessage}"></span>
                             </span>
-                            <button id="button_input" class="btn btn-primary" type="submit" th:text="#{label.form.submit}">Save</button>
-                            <span id="globalError" class="alert alert-danger col-sm-4" style="display:none"></span>
-                        </div>
+                        <button id="button_input" class="btn btn-primary" type="submit" th:text="#{label.form.submit}">
+                            Save
+                        </button>
+                        <span id="globalError" class="alert alert-danger col-sm-4" style="display:none"></span>
                     </div>
-                </fieldset>
-            </form>
-            <br/> 
-            <!--<a th:href="@{/login}" th:text="#{label.form.loginLink}">login</a>-->
-        </div>
+                </div>
+            </fieldset>
+        </form>
+        <br/>
+        <!--<a th:href="@{/login}" th:text="#{label.form.loginLink}">login</a>-->
     </div>
-    <div>
+</div>
+<div>
 
-    </div>
+</div>
 
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/alert.js}"  src="/static/js/alert.js"></script>
-    <script th:inline="javascript">
+<script th:inline="javascript" type="application/javascript">
     /*<![CDATA[*/
     var serverContext = [[@{/}]];
-
-    $(document).ready(function () {
-        $('form').submit(function(event) {
-            register(event);
-        });
-    });
-
-    function register(event){
-        event.preventDefault();
-        $(".alert").html("").hide();
-        $(".error-list").html("");
-        var formDataCustom = {"email":"", "firstName":"", "lastName":"","enabled":"","phoneNumber":"","id":""};
-        $.each($('form').serializeArray(), function(index, param) {
-            if(param.name === "email") {
-                formDataCustom.email = param.value;
-            } else if(param.name === "firstName") {
-                formDataCustom.firstName = param.value;
-            } else if(param.name === "lastName") {
-                formDataCustom.lastName = param.value;
-            } else if(param.name === "enabled") {
-                formDataCustom.enabled = param.value;
-            } else if(param.name === "phoneNumber") {
-                formDataCustom.phoneNumber = param.value;
-            } else if(param.name === "id") {
-                formDataCustom.id = param.value;
-            }
-        });
-        var formDataCustomStr = JSON.stringify(formDataCustom);
-        $.ajax({
-            type: "PATCH",
-            url: serverContext + "user/" + formDataCustom.id,
-            processData: false,
-            contentType: 'application/json',
-            data: formDataCustomStr,
-            success: function(data) {
-                if(data.statusCode == 102) {
-                    $.alert(data.description, {
-                        autoClose: true,
-                        closeTime: 1500,
-                        type: 'success',
-                    });
-                    setTimeout(function(){
-                        window.location.href = serverContext + "user-list";
-                    }, 2000);
-                }
-            },
-            error: function( jqXhr, textStatus, errorThrown ){
-                console.log( errorThrown );
-
-                $.alert(jqXhr.responseJSON.description, {
-                    autoClose: false,
-                    type: 'warning',
-                });
-
-                if(jqXhr.responseJSON.statusCode == 409) {
-                    $("#emailError").show().html(jqXhr.responseJSON.description);
-                } else {
-                    var errors = $.parseJSON(jqXhr.responseJSON.description);
-                    $.each( errors, function( index,item ){
-                        if (item.field){
-                            $("#"+item.field+"Error").show().append(item.defaultMessage+"<br/>");
-                        }
-                        else {
-                            $("#globalError").show().append(item.defaultMessage+"<br/>");
-                        }
-
-                    });
-                }
-            }
-        });
-    }
     /*]]>*/
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/alert.js}" src="/static/js/alert.js"></script>
+<script type="text/javascript" th:src="@{/js/editUser.js}" src="/static/js/editUser.js"></script>
 
-    </script>
 </body>
 
 </html>

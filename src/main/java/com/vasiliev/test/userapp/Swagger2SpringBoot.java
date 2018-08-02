@@ -8,10 +8,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-/*@ComponentScan(basePackages = {
-        "com.vasiliev.test.userapp",
-        "com.vasiliev.test.userapp.config",
-        "com.vasiliev.test.userapp.controller"})*/
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {

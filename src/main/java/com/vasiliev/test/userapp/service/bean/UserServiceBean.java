@@ -1,6 +1,8 @@
 package com.vasiliev.test.userapp.service.bean;
 
 import com.vasiliev.test.userapp.model.User;
+import com.vasiliev.test.userapp.model.UserList;
+import com.vasiliev.test.userapp.model.UserManageEvent;
 import com.vasiliev.test.userapp.model.UserRegisterInvoice;
 import com.vasiliev.test.userapp.persistance.dao.UserRepository;
 import com.vasiliev.test.userapp.persistance.entity.UserEntity;
@@ -10,12 +12,14 @@ import com.vasiliev.test.userapp.util.reliability.OperationResultStatus;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,6 +36,9 @@ public class UserServiceBean implements UserService {
 
     @Autowired
     private SessionRegistry sessionRegistry;
+
+    @Autowired
+    public ApplicationEventPublisher eventPublisher;
 
     @Autowired
     @Qualifier("userMapper")
@@ -55,12 +62,19 @@ public class UserServiceBean implements UserService {
             }
             savedUser = userRepository.save(userEntity);
         }
+        eventPublisher.publishEvent(new UserManageEvent()
+                .uuid(savedUser.getId().toString())
+                .eventType(UserManageEvent.EventTypeEnum.CREATED)
+                .date(OffsetDateTime.now()));
         return userMapper.map(savedUser, User.class);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll().stream().map(usr -> userMapper.map(usr, User.class)).collect(Collectors.toList());
+    public UserList getAllUsers() {
+        List<User> userList = userRepository.findAll().stream().map(usr -> userMapper.map(usr, User.class)).collect(Collectors.toList());
+        UserList users = new UserList();
+        users.addAll(userList);
+        return users;
     }
 
     @Override
@@ -106,6 +120,10 @@ public class UserServiceBean implements UserService {
             }
             userEntity = userRepository.save(userEntityExists);
         }
+        eventPublisher.publishEvent(new UserManageEvent()
+                .uuid(userEntity.getId().toString())
+                .eventType(UserManageEvent.EventTypeEnum.MODIFIED)
+                .date(OffsetDateTime.now()));
         return userMapper.map(userEntity, User.class);
     }
 

@@ -42,7 +42,7 @@ public class UserApiController extends GenericApiController implements UserApi {
 
     @Override
     public ResponseEntity<OperationResultWithUserList> getUserList() {
-        return retrieved().content(userService)
+        return retrieved().content(userService.getAllUsers())
                 .type(OperationResultWithUserList.class)
                 .response();
     }

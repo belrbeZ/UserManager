@@ -1,99 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
-<style>
-.password-verdict{
-color:#000;
-}
-</style>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII"/>
-<title th:text="#{label.form.title}">form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+    <style>
+        .password-verdict {
+            color: #000;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII"/>
+    <title th:text="#{label.form.title}">form</title>
 </head>
 <body>
-    <div class="container">
-        <div >
-            <h1 th:text="#{label.form.title}">form</h1>
+<div class="container">
+    <div>
+        <h1 th:text="#{label.form.title}">form</h1>
+        <br/>
+        <form action="/user" method="POST" enctype="utf8">
+            <div class="form-group row">
+                <label class="col-sm-3" th:text="#{label.user.email}">email</label>
+                <span class="col-sm-5"><input type="email" class="form-control" name="email" value=""
+                                              required="required"/></span>
+                <span id="emailError" class="alert alert-danger col-sm-4" style="display:none"></span>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3" th:text="#{label.user.password}">password</label>
+                <span class="col-sm-5"><input id="password" class="form-control" name="password" value=""
+                                              type="password" required="required"/></span>
+                <span id="passwordError" class="alert alert-danger col-sm-4" style="display:none"></span>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3" th:text="#{label.user.confirmPass}">confirm</label>
+                <span class="col-sm-5"><input id="matchPassword" class="form-control" name="matchingPassword" value=""
+                                              type="password" required="required"/></span>
+                <span id="globalError" class="alert alert-danger col-sm-4" style="display:none"></span>
+            </div>
             <br/>
-            <form action="/user" method="POST" enctype="utf8" >
-                <div class="form-group row">
-                    <label class="col-sm-3" th:text="#{label.user.email}">email</label>
-                    <span class="col-sm-5"><input type="email" class="form-control" name="email" value="" required="required"/></span>                    
-                    <span id="emailError" class="alert alert-danger col-sm-4" style="display:none"></span>
-                    
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-3" th:text="#{label.user.password}">password</label>
-                    <span class="col-sm-5"><input id="password" class="form-control" name="password" value="" type="password" required="required"/></span>
-                    <span id="passwordError" class="alert alert-danger col-sm-4" style="display:none"></span>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-3" th:text="#{label.user.confirmPass}">confirm</label>
-                    <span class="col-sm-5"><input id="matchPassword" class="form-control" name="matchingPassword" value="" type="password" required="required"/></span>
-                    <span id="globalError" class="alert alert-danger col-sm-4" style="display:none"></span>
-                </div>
-                <br/>
-                <button type="submit" class="btn btn-primary" th:text="#{label.form.submit}">submit</button>
-            </form>
-            <br/> 
-            <a th:href="@{/login}" th:text="#{label.form.loginLink}">login</a>
-        </div>
+            <button type="submit" class="btn btn-primary" th:text="#{label.form.submit}">submit</button>
+        </form>
+        <br/>
+        <a th:href="@{/login}" th:text="#{label.form.loginLink}">login</a>
     </div>
+</div>
 
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/alert.js}"  src="/static/js/alert.js"></script>
-    <script type="text/javascript" th:src="@{/js/pwstrength.js}"  src="/static/js/pwstrength.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/alert.js}" src="/static/js/alert.js"></script>
+<script type="text/javascript" th:src="@{/js/pwstrength.js}" src="/static/js/pwstrength.js"></script>
+<script type="text/javascript" th:src="@{/js/registerUser.js}" src="/static/js/registerUser.js"></script>
 
-    <script th:inline="javascript">
+<script th:inline="javascript">
     /*<![CDATA[*/
     var serverContext = [[@{/}]];
 
-    $(document).ready(function () {
-        $('form').submit(function(event) {
-            register(event);
-        });
+        $(document).ready(function () {
+            $('form').submit(function (event) {
+                register(event);
+            });
 
-        $(":password").keyup(function(){
-            if($("#password").val() != $("#matchPassword").val()){
-                $("#globalError").show().html(/*[[#{PasswordMatches.user}]]*/);
-            }else{
-                $("#globalError").html("").hide();
-            }
-        });
+            $(":password").keyup(function () {
+                if ($("#password").val() != $("#matchPassword").val()) {
+                    $("#globalError").show().html(/*[[#{PasswordMatches.user}]]*/);
+                } else {
+                    $("#globalError").html("").hide();
+                }
+            });
 
-        options = {
-                common: {minChar:8},
+            options = {
+                common: {minChar: 8},
                 ui: {
-                    showVerdictsInsideProgressBar:true,
-                    showErrors:true,
-                    errorMessages:{
-                          wordLength: /*[[#{error.wordLength}]]*/,
-                          wordNotEmail: /*[[#{error.wordNotEmail}]]*/,
-                          wordSequences: /*[[#{error.wordSequences}]]*/,
-                          wordLowercase: /*[[#{error.wordLowercase}]]*/,
-                          wordUppercase: /*[[#{error.wordUppercase}]]*/,
-                              wordOneNumber: /*[[#{error.wordOneNumber}]]*/,
-                          wordOneSpecialChar: /*[[#{error.wordOneSpecialChar}]]*/
-                        }
+                    showVerdictsInsideProgressBar: true,
+                    showErrors: true,
+                    errorMessages: {
+                        wordLength: /*[[#{error.wordLength}]]*/,
+                        wordNotEmail: /*[[#{error.wordNotEmail}]]*/,
+                        wordSequences: /*[[#{error.wordSequences}]]*/,
+                        wordLowercase: /*[[#{error.wordLowercase}]]*/,
+                        wordUppercase: /*[[#{error.wordUppercase}]]*/,
+                        wordOneNumber: /*[[#{error.wordOneNumber}]]*/,
+                        wordOneSpecialChar: /*[[#{error.wordOneSpecialChar}]]*/
                     }
+                }
             };
-         $('#password').pwstrength(options);
-    });
+            $('#password').pwstrength(options);
+        });
 
-    function register(event){
+    function register(event) {
         event.preventDefault();
         $(".alert").html("").hide();
         $(".error-list").html("");
-        if($("#password").val() != $("#matchPassword").val()){
+        if ($("#password").val() != $("#matchPassword").val()) {
             $("#globalError").show().html(/*[[#{PasswordMatches.user}]]*/);
             return;
         }
-        var formDataCustom = {"email":"","password":""}
-        $.each($('form').serializeArray(), function(index, param) {
-            if(param.name === "email") {
+        var formDataCustom = {"email": "", "password": ""}
+        $.each($('form').serializeArray(), function (index, param) {
+            if (param.name === "email") {
                 formDataCustom.email = param.value;
-            } else if(param.name === "password") {
+            } else if (param.name === "password") {
                 formDataCustom.password = param.value;
             }
         });
@@ -104,28 +108,28 @@ color:#000;
             processData: false,
             contentType: 'application/json',
             data: formDataCustomStr,
-            success: function(data) {
-                if(data.message != undefined && data.message == "success"){
+            success: function (data) {
+                if (data.message != undefined && data.message == "success") {
                     alert("Login!")
                 }
                 window.location.href = serverContext + "user-list";
             },
-            error: function( jqXhr, textStatus, errorThrown ){
-                console.log( errorThrown );
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
                 $.alert(jqXhr.responseJSON.description, {
                     autoClose: false,
                     type: 'warning',
                 });
-                if(jqXhr.responseJSON.statusCode == 409) {
+                if (jqXhr.responseJSON.statusCode == 409) {
                     $("#emailError").show().html(jqXhr.responseJSON.description);
                 } else {
                     var errors = $.parseJSON(jqXhr.responseJSON.description);
-                    $.each( errors, function( index,item ){
-                        if (item.field){
-                            $("#"+item.field+"Error").show().append(item.defaultMessage+"<br/>");
+                    $.each(errors, function (index, item) {
+                        if (item.field) {
+                            $("#" + item.field + "Error").show().append(item.defaultMessage + "<br/>");
                         }
                         else {
-                            $("#globalError").show().append(item.defaultMessage+"<br/>");
+                            $("#globalError").show().append(item.defaultMessage + "<br/>");
                         }
 
                     });
@@ -134,8 +138,7 @@ color:#000;
         });
     }
     /*]]>*/
-
-    </script>
+</script>
 </body>
 
 </html>

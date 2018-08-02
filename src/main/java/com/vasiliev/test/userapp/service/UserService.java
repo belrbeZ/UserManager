@@ -2,6 +2,7 @@ package com.vasiliev.test.userapp.service;
 
 
 import com.vasiliev.test.userapp.model.User;
+import com.vasiliev.test.userapp.model.UserList;
 import com.vasiliev.test.userapp.model.UserRegisterInvoice;
 import com.vasiliev.test.userapp.persistance.entity.UserEntity;
 
@@ -11,7 +12,7 @@ public interface UserService {
 
     User registerNewUserAccount(UserRegisterInvoice userRegisterInvoice);
 
-    List<User> getAllUsers();
+    UserList getAllUsers();
 
     void deleteUser(String id);
 
