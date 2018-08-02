@@ -1,0 +1,8 @@
+{
+    "changedAt": "2017-07-01 23:34:56",
+    "changedBy": "string",
+    "email": "test@email.com",
+    "emailVerified": false,
+    "enabled": false,
+    "phoneNumber": "+777777"
+}

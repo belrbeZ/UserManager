@@ -17,7 +17,7 @@ info:
     url: https://github.com/belrbeZ
 
 host: localhost:8000
-basePath: /usermanagement/1.0
+#basePath: /usermanagement
 
 schemes:
   - http
@@ -63,7 +63,7 @@ paths:
           description: An invoice for creating a new user
           required: true
           schema:
-              $ref: "#/definitions/User"
+            $ref: "#/definitions/UserRegisterInvoice"
       responses:
         '201':
           description: User was successfully created. Id is provided in response.
@@ -98,7 +98,7 @@ paths:
         default:
           $ref: '#/responses/Error'
 
-    put:
+    patch:
       description: Updates an existing user
       operationId: updateUser
       tags:
@@ -175,6 +175,14 @@ definitions:
         maxLength: 255
         description: |
             Users phone number.
+      firstName:
+        type: string
+        description: |
+          firstName of user.
+      lastName:
+        type: string
+        description: |
+          lastName of user.
       id:
         type: string
         maxLength: 36
@@ -194,10 +202,51 @@ definitions:
         type: boolean
         description: |
             Indicator, that syas, if user is enabled.
-      createdAt:
+      changedAt:
         type: string
         description: |
-            Date and time the user was created, Date in format `YYYY-MM-dd HH:mm:ss`. E.g.: 2017-07-01 23:34:56
+            Date and time the user was changed, Date in format `YYYY-MM-dd HH:mm:ss`. E.g.: 2017-07-01 23:34:56
+      changedBy:
+        type: string
+        description: |
+            The user that changed the user
+
+  UserRegisterInvoice:
+    type: object
+    required:
+      - email
+    properties:
+      password:
+        type: string
+        pattern: ^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$
+        maxLength: 32
+        minLength: 8
+        description: |
+            New user password.
+      email:
+        type: string
+        pattern: ^[\w\._-]+@[\w\._-]+\.\w+$
+        maxLength: 255
+        description: |
+            E-mail address of user. Used as usernam/login, during login
+
+  Password:
+    type: object
+    required:
+      - oldPassword
+      - newPassword
+    properties:
+      oldPassword:
+        type: string
+        maxLength: 32
+        description: |
+            Old user password.
+      newPassword:
+        type: string
+        maxLength: 32
+        minLength: 8
+        description: |
+            New user password.
 
 responses:
 

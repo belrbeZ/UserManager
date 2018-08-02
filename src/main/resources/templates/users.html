@@ -1,0 +1,102 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<title th:text="#{label.pages.home.title}">home</title>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#" th:text="#{label.pages.home.title}">home</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container">
+        <div class="row">
+            <h2>Currently registered users</h2>
+            <table class="table table-striped table-bordered" id="cities">
+                <thead>
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Is enabled</th>
+                    <th scope="col">ChangedAt</th>
+                    <th scope="col">ChangedBy</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}" th:id="|user_${user.id}|">
+                    <th scope="row">
+                    <span id="email" data-type="text" data-title="Email"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.email}"
+                          class="inline-editable"
+                          th:text="${user.email}">Email user</span>
+                    </th>
+                    <th scope="row">
+                    <span id="firstName" data-type="text" data-title="FirstName"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.firstName}"
+                          class="inline-editable"
+                          th:text="${user.firstName}">First Name</span>
+                    </th>
+                    <th scope="row">
+                    <span id="lastName" data-type="text" data-title="LastName"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.lastName}"
+                          class="inline-editable"
+                          th:text="${user.lastName}">Last Name</span>
+                    </th>
+                    <th scope="row">
+                    <span id="phoneNumber" data-type="text" data-title="PhoneNumber"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.phoneNumber}"
+                          class="inline-editable"
+                          th:text="${user.phoneNumber}">Phone Number</span>
+                    </th>
+                    <td class="text-right">
+                    <span id="enabled" data-type="number" data-title="Enabled"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.enabled}"
+                          data-clear="false"
+                          class="inline-editable"
+                          th:text="${user.enabled}">Is Enabled</span>
+                    </td>
+                    <td class="text-right">
+                    <span id="changedAt" data-type="number" data-title="ChangedAt"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.changedAt}"
+                          data-clear="false"
+                          class="inline-editable"
+                          th:text="${user.changedAt}">User Changed At</span>
+                    </td>
+                    <td class="text-right">
+                    <span id="changedBy" data-type="number" data-title="ChangedBy"
+                          th:attr="data-url=@{/user/list}, data-pk=${user.id}, data-value=${user.changedBy}"
+                          data-clear="false"
+                          class="inline-editable"
+                          th:text="${user.changedBy}">User Changed By</span>
+                    </td>
+                    <td>
+                        <a th:href="@{'/user-change/'+${user.id}}" th:text="#{label.form.changeUser}">Edit</a>
+                        <!--<a th:href="@{'/user-change/'+${user.id}}"
+                           th:attr="aria-label=${'Edit ' + user.email}" class="city-link">Edit</a>-->
+                        <!--<a th:href="@{|/user/${user.id}|}"
+                           th:attr="aria-label=${'Delete ' + user.email}" class="city-link">Delete</a>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <h2>Currently logged in users</h2>
+            <div th:each="user : ${activeUsers}">
+                <p th:text="${user}">user</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

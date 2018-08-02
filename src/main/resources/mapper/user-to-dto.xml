@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping type="bi-directional">
+        <class-a>com.vasiliev.test.userapp.persistance.entity.UserEntity</class-a>
+        <class-b>com.vasiliev.test.userapp.model.User</class-b>
+        <field copy-by-reference="true">
+            <a get-method="getChangedAtStr" set-method="setChangedAtStr">changedAt</a>
+            <b>changedAt</b>
+        </field>
+        <field custom-converter="com.vasiliev.test.userapp.util.mapper.UuidConverter">
+            <a>id</a>
+            <b>id</b>
+        </field>
+    </mapping>
+</mappings>
