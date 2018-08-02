@@ -5,14 +5,19 @@ import java.lang.reflect.Method;
 
 /**
  * Utility methods to work with object types dynamically.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
  */
 public final class Reflections {
+
+    private Reflections() {
+    }
 
     /**
      * Casts a specified object to a target type.
      *
+     * @param <T>    the target type.
      * @param object the object to be casted.
-     * @param <T> the target type.
      * @return the casted object.
      */
     @SuppressWarnings("unchecked")
@@ -23,9 +28,9 @@ public final class Reflections {
     /**
      * Creates a new instance of specified target type.
      *
-     * @param type the target type's class.
+     * @param <T>        the target type.
+     * @param type       the target type's class.
      * @param parameters parameters to be passed into a constructor.
-     * @param <T> the target type.
      * @return new created instance.
      */
     public static <T> T instantiate(final Class<T> type, final Object... parameters) {
@@ -41,10 +46,10 @@ public final class Reflections {
     /**
      * Invokes a specified method.
      *
+     * @param <T>        the target type.
      * @param methodName method's name.
-     * @param target the target object for method invocation.
+     * @param target     the target object for method invocation.
      * @param parameters parameters to be passed into a constructor.
-     * @param <T> the target type.
      * @return method invocation result.
      */
     public static <T> T invoke(final String methodName, final Object target, final Object... parameters) {
@@ -65,10 +70,6 @@ public final class Reflections {
             result[i] = parameter != null ? parameters[i].getClass() : Object.class;
         }
         return result;
-    }
-
-    private Reflections() {
-
     }
 }
 

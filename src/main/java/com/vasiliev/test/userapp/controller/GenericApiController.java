@@ -10,6 +10,8 @@ import static com.vasiliev.test.userapp.util.reliability.OperationResultStatus.*
 
 /**
  * Generic API controller implementation.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
  */
 abstract class GenericApiController {
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vasiliev.test.userapp.model.User;
+import com.vasiliev.test.userapp.model.UserList;
 import com.vasiliev.test.userapp.model.UserRegisterInvoice;
 import org.junit.After;
 import org.junit.Before;
@@ -24,20 +25,26 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * The type User service bean test.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:test.properties")
 public class UserServiceBeanTest {
 
+    private final String UserFilePath = "/User.json";
     private ObjectMapper objectMapper;
-
     @Autowired
     private UserService userService;
-
-    private final String UserFilePath = "/User.json";
     private User testUser;
 
+    /**
+     * Register new user account.
+     */
     @Before
     public void registerNewUserAccount() {
         UserRegisterInvoice userRegisterInvoice = new UserRegisterInvoice();
@@ -45,22 +52,37 @@ public class UserServiceBeanTest {
         testUser = userService.registerNewUserAccount(userRegisterInvoice);
     }
 
+    /**
+     * Delete user.
+     */
     @After
     public void deleteUser() {
         userService.deleteUser(testUser.getId());
     }
 
+    /**
+     * Gets all users.
+     */
     @Test
     public void getAllUsers() {
-        assertEquals(userService.getAllUsers(), Collections.singletonList(testUser));
+        UserList users = new UserList();
+        users.add(testUser);
+        assertEquals(userService.getAllUsers(), users);
     }
 
+    /**
+     * Gets user by id.
+     */
     @Test
     public void getUserByID() {
         assertEquals(userService.getUserByID(testUser.getId()), testUser);
     }
 
-//    @Ignore
+    /**
+     * Update user.
+     *
+     * @throws IOException the io exception
+     */
     @Test
     public void updateUser() throws IOException {
         objectMapper = Jackson2ObjectMapperBuilder.json()

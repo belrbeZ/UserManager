@@ -22,6 +22,8 @@ import static com.vasiliev.test.userapp.util.reliability.OperationResultStatus.F
 
 /**
  * The type Global exception handler.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
  */
 @ControllerAdvice
 class GlobalExceptionHandler {
@@ -31,6 +33,12 @@ class GlobalExceptionHandler {
     @Autowired
     private OperationResultStatusMapper operationResultStatusMapper;
 
+    /**
+     * Handle type mismatch exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(TypeMismatchException.class)
     public ResponseEntity<?> handleTypeMismatchException(final TypeMismatchException exception) {
         logger.warn(exception);
@@ -41,6 +49,12 @@ class GlobalExceptionHandler {
                 .response();
     }
 
+    /**
+     * Handle invalid argument exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleInvalidArgumentException(final MethodArgumentNotValidException exception) {
         logger.warn(exception);
@@ -51,6 +65,12 @@ class GlobalExceptionHandler {
                 .response();
     }
 
+    /**
+     * Handle message not readable exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleMessageNotReadableException(final HttpMessageNotReadableException exception) {
         logger.warn(exception);
@@ -61,6 +81,12 @@ class GlobalExceptionHandler {
                 .response();
     }
 
+    /**
+     * Handle method not supported exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<?> handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException exception) {
         logger.warn(exception);
@@ -71,6 +97,12 @@ class GlobalExceptionHandler {
                 .response();
     }
 
+    /**
+     * Handle operation exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(OperationException.class)
     public ResponseEntity<?> handleOperationException(final OperationException exception) {
         logger.warn(exception);
@@ -81,11 +113,22 @@ class GlobalExceptionHandler {
                 .response();
     }
 
+    /**
+     * Handle exception.
+     *
+     * @param exception the exception
+     */
     @ExceptionHandler(AsyncRequestTimeoutException.class)
     public void handleException(final AsyncRequestTimeoutException exception) {
         logger.warn(exception);
     }
 
+    /**
+     * Handle exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(final Exception exception) {
         logger.warn(exception);

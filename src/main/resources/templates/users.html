@@ -101,7 +101,7 @@
     <div class="row">
         <h2>Messages</h2>
         <label class="trigger">
-            <p>Show hide messages</p>
+            <span>Show hide messages  </span>
             <input type="checkbox" class="checkbox checkbox--red"/>
             <div id="messages" class="msg"></div>
         </label>
@@ -111,7 +111,8 @@
 
 <script th:inline="javascript" type="application/javascript">
     /*<![CDATA[*/
-    var serverContext = [[@{/}]];
+    var serverContext = [[@{
+        /}]];
     /*]]>*/
 </script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

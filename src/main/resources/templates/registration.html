@@ -51,7 +51,8 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var serverContext = [[@{/}]];
+    var serverContext = [[@{
+        /}]];
 
         $(document).ready(function () {
             $('form').submit(function (event) {
@@ -85,58 +86,58 @@
             $('#password').pwstrength(options);
         });
 
-    function register(event) {
-        event.preventDefault();
-        $(".alert").html("").hide();
-        $(".error-list").html("");
-        if ($("#password").val() != $("#matchPassword").val()) {
-            $("#globalError").show().html(/*[[#{PasswordMatches.user}]]*/);
-            return;
-        }
-        var formDataCustom = {"email": "", "password": ""}
-        $.each($('form').serializeArray(), function (index, param) {
-            if (param.name === "email") {
-                formDataCustom.email = param.value;
-            } else if (param.name === "password") {
-                formDataCustom.password = param.value;
+        function register(event) {
+            event.preventDefault();
+            $(".alert").html("").hide();
+            $(".error-list").html("");
+            if ($("#password").val() != $("#matchPassword").val()) {
+                $("#globalError").show().html(/*[[#{PasswordMatches.user}]]*/);
+                return;
             }
-        });
-        var formDataCustomStr = JSON.stringify(formDataCustom);
-        $.ajax({
-            type: "POST",
-            url: serverContext + "user",
-            processData: false,
-            contentType: 'application/json',
-            data: formDataCustomStr,
-            success: function (data) {
-                if (data.message != undefined && data.message == "success") {
-                    alert("Login!")
+            var formDataCustom = {"email": "", "password": ""}
+            $.each($('form').serializeArray(), function (index, param) {
+                if (param.name === "email") {
+                    formDataCustom.email = param.value;
+                } else if (param.name === "password") {
+                    formDataCustom.password = param.value;
                 }
-                window.location.href = serverContext + "user-list";
-            },
-            error: function (jqXhr, textStatus, errorThrown) {
-                console.log(errorThrown);
-                $.alert(jqXhr.responseJSON.description, {
-                    autoClose: false,
-                    type: 'warning',
-                });
-                if (jqXhr.responseJSON.statusCode == 409) {
-                    $("#emailError").show().html(jqXhr.responseJSON.description);
-                } else {
-                    var errors = $.parseJSON(jqXhr.responseJSON.description);
-                    $.each(errors, function (index, item) {
-                        if (item.field) {
-                            $("#" + item.field + "Error").show().append(item.defaultMessage + "<br/>");
-                        }
-                        else {
-                            $("#globalError").show().append(item.defaultMessage + "<br/>");
-                        }
-
+            });
+            var formDataCustomStr = JSON.stringify(formDataCustom);
+            $.ajax({
+                type: "POST",
+                url: serverContext + "user",
+                processData: false,
+                contentType: 'application/json',
+                data: formDataCustomStr,
+                success: function (data) {
+                    if (data.message != undefined && data.message == "success") {
+                        alert("Login!")
+                    }
+                    window.location.href = serverContext + "user-list";
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    $.alert(jqXhr.responseJSON.description, {
+                        autoClose: false,
+                        type: 'warning',
                     });
+                    if (jqXhr.responseJSON.statusCode == 409) {
+                        $("#emailError").show().html(jqXhr.responseJSON.description);
+                    } else {
+                        var errors = $.parseJSON(jqXhr.responseJSON.description);
+                        $.each(errors, function (index, item) {
+                            if (item.field) {
+                                $("#" + item.field + "Error").show().append(item.defaultMessage + "<br/>");
+                            }
+                            else {
+                                $("#globalError").show().append(item.defaultMessage + "<br/>");
+                            }
+
+                        });
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
     /*]]>*/
 </script>
 </body>

@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * The type User api controller.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @RestController
 public class UserApiController extends GenericApiController implements UserApi {
 
@@ -22,6 +27,11 @@ public class UserApiController extends GenericApiController implements UserApi {
     @Autowired
     private UserService userService;
 
+    /**
+     * Instantiates a new User api controller.
+     *
+     * @param objectMapper the object mapper
+     */
     @Autowired
     public UserApiController(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -31,7 +41,8 @@ public class UserApiController extends GenericApiController implements UserApi {
     public ResponseEntity<OperationResultWithUser> createUser(@Valid @RequestBody UserRegisterInvoice userInvoice) {
         return created().content(userService.registerNewUserAccount(userInvoice))
                 .type(OperationResultWithUser.class)
-                .response();    }
+                .response();
+    }
 
     @Override
     public ResponseEntity<OperationResultWithUser> getUser(@PathVariable("id") String id) {

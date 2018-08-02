@@ -13,12 +13,24 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+/**
+ * The type Page controller.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @Controller
 public class PageController {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * Profile update model and view.
+     *
+     * @param id    the id
+     * @param model the model
+     * @return the model and view
+     */
     @RequestMapping(value = "user-change/{id}", method = RequestMethod.GET)
     public ModelAndView profileUpdate(@PathVariable(value = "id") String id, Model model) {
         ModelAndView modelAndView = new ModelAndView();
@@ -31,6 +43,12 @@ public class PageController {
         return modelAndView;
     }
 
+    /**
+     * Profile get model and view.
+     *
+     * @param model the model
+     * @return the model and view
+     */
     @RequestMapping(value = "user-list", method = RequestMethod.GET)
     public ModelAndView profileGet(Model model) {
         ModelAndView modelAndView = new ModelAndView();
@@ -42,17 +60,6 @@ public class PageController {
         modelAndView.addObject("activeUsers", activeUsers);
 
         modelAndView.setViewName("users");
-
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "registration", method = RequestMethod.GET)
-    public ModelAndView registration(Model model) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        User newUser = new User();
-        modelAndView.addObject(newUser);
-        modelAndView.setViewName("registration");
 
         return modelAndView;
     }

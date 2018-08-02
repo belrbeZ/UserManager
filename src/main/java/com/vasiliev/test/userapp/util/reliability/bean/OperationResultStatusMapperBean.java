@@ -5,6 +5,11 @@ import com.vasiliev.test.userapp.util.reliability.OperationResultStatusMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Operation result status mapper bean.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @Component
 class OperationResultStatusMapperBean implements OperationResultStatusMapper {
 

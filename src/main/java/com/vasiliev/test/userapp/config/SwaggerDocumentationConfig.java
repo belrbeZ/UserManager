@@ -9,9 +9,19 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/**
+ * The type Swagger documentation config.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @Configuration
 public class SwaggerDocumentationConfig {
 
+    /**
+     * Api info api info.
+     *
+     * @return the api info
+     */
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Test User Management")
@@ -24,6 +34,11 @@ public class SwaggerDocumentationConfig {
                 .build();
     }
 
+    /**
+     * Custom implementation docket.
+     *
+     * @return the docket
+     */
     @Bean
     public Docket customImplementation() {
         return new Docket(DocumentationType.SWAGGER_2)

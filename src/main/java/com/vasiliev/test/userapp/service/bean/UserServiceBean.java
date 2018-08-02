@@ -24,43 +24,47 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * The type User service bean.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @Service
-@Transactional
 public class UserServiceBean implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private SessionRegistry sessionRegistry;
-
+    /**
+     * The Event publisher.
+     */
     @Autowired
     public ApplicationEventPublisher eventPublisher;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private SessionRegistry sessionRegistry;
     @Autowired
     @Qualifier("userMapper")
     private Mapper userMapper;
 
+    @Transactional
     @Override
     public User registerNewUserAccount(final UserRegisterInvoice userInvoice) {
-        final UserEntity userEntity = userMapper.map(userInvoice, UserEntity.class);
-        userEntity.setPassword(passwordEncoder.encode(userInvoice.getPassword()));
+        final UserEntity userEntityToCreate = userMapper.map(userInvoice, UserEntity.class);
+        userEntityToCreate.setPassword(passwordEncoder.encode(userInvoice.getPassword()));
         String changedBy = null;
         if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
             changedBy = SecurityContextHolder.getContext().getAuthentication().getName();
         } else {
             changedBy = "System";
         }
-        userEntity.setChangedBy(changedBy);
+        userEntityToCreate.setChangedBy(changedBy);
         UserEntity savedUser = null;
         synchronized (UserServiceBean.class) {
             if (emailExist(userInvoice.getEmail())) {
                 throw new OperationException(OperationResultStatus.FAILURE_ALREADY_EXISTS, "There is an account with that email adress: " + userInvoice.getEmail());
             }
-            savedUser = userRepository.save(userEntity);
+            savedUser = userRepository.save(userEntityToCreate);
         }
         eventPublisher.publishEvent(new UserManageEvent()
                 .uuid(savedUser.getId().toString())
@@ -71,12 +75,14 @@ public class UserServiceBean implements UserService {
 
     @Override
     public UserList getAllUsers() {
-        List<User> userList = userRepository.findAll().stream().map(usr -> userMapper.map(usr, User.class)).collect(Collectors.toList());
+        List<User> userList = userRepository.findAll().stream()
+                .map(usr -> userMapper.map(usr, User.class)).collect(Collectors.toList());
         UserList users = new UserList();
         users.addAll(userList);
         return users;
     }
 
+    @Transactional
     @Override
     public void deleteUser(final String id) {
         if (!userRepository.exists(UUID.fromString(id))) {
@@ -90,35 +96,37 @@ public class UserServiceBean implements UserService {
         return userMapper.map(userRepository.findOne(UUID.fromString(id)), User.class);
     }
 
+    @Transactional
     @Override
     public User updateUser(String id, User userUpdateInvoice) {
         userUpdateInvoice.setId(id);
 //        checkIfValidOldPassword(userUpdateInvoice, userRepository.getOne(UUID.fromString(id)).getPassword());
-        UserEntity userEntityToSave = userMapper.map(userUpdateInvoice, UserEntity.class);
         String changedBy = null;
         if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
             changedBy = SecurityContextHolder.getContext().getAuthentication().getName();
         } else {
             changedBy = "System";
         }
-        UserEntity userEntityExists = userRepository.findOne(UUID.fromString(id));
-        if (userEntityToSave.getFirstName() != null)  {
-            userEntityExists.setFirstName(userEntityToSave.getFirstName());
+        UserEntity userEntityToSave = userRepository.findOne(UUID.fromString(id));
+        if (userUpdateInvoice.getFirstName() != null) {
+            userEntityToSave.setFirstName(userUpdateInvoice.getFirstName());
         }
-        if (userEntityToSave.getLastName() != null)  {
-            userEntityExists.setLastName(userEntityToSave.getLastName());
+        if (userUpdateInvoice.getLastName() != null) {
+            userEntityToSave.setLastName(userUpdateInvoice.getLastName());
         }
-        userEntityExists.setEnabled(userEntityToSave.isEnabled());
-        userEntityExists.setChangedBy(changedBy);
+        if (userUpdateInvoice.isEnabled() != null) {
+            userEntityToSave.setEnabled(userUpdateInvoice.isEnabled());
+        }
+        userEntityToSave.setChangedBy(changedBy);
         UserEntity userEntity = null;
         synchronized (UserServiceBean.class) {
-            if (userEntityToSave.getEmail() != null && !userEntityToSave.getEmail().equalsIgnoreCase(userEntityExists.getEmail()))  {
-                if (emailExistExcludeOwn(userEntityToSave.getEmail(), id)) {
-                    throw new OperationException(OperationResultStatus.FAILURE_ALREADY_EXISTS, "There is an account with that email adress: " + userEntityToSave.getEmail());
+            if (userUpdateInvoice.getEmail() != null && !userUpdateInvoice.getEmail().equalsIgnoreCase(userEntityToSave.getEmail())) {
+                if (emailExistExcludeOwn(userUpdateInvoice.getEmail(), id)) {
+                    throw new OperationException(OperationResultStatus.FAILURE_ALREADY_EXISTS, "There is an account with that email adress: " + userUpdateInvoice.getEmail());
                 }
-                userEntityExists.setEmail(userEntityToSave.getEmail());
+                userEntityToSave.setEmail(userUpdateInvoice.getEmail());
             }
-            userEntity = userRepository.save(userEntityExists);
+            userEntity = userRepository.save(userEntityToSave);
         }
         eventPublisher.publishEvent(new UserManageEvent()
                 .uuid(userEntity.getId().toString())

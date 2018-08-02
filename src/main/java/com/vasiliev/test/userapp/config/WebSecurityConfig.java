@@ -15,6 +15,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * The type Web security config.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * There we register our implementation of UserDetailsService as instrument
      * for authentication.
+     *
      * @param auth some AuthenticationManagerBuilder which spring provides us
      * @throws Exception is cases where some setting isn't correct
      */
@@ -38,11 +44,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+    /**
+     * Password encoder password encoder.
+     *
+     * @return the password encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Authentication provider dao authentication provider.
+     *
+     * @return the dao authentication provider
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -51,6 +67,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
+    /**
+     * Session registry session registry.
+     *
+     * @return the session registry
+     */
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
@@ -61,42 +82,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                    .anyRequest().authenticated()
-                    .antMatchers(
-                            "/user/*",
-                            "/user-list")
-                        .authenticated()
-                    .antMatchers(
-                            "/invalidSession*")
-                        .anonymous()
-                    .antMatchers(
-                            "/",
-                            "/registration",
-                            "/api*",
-                            "/login*",
-                            "/logout*")
-                        .permitAll()
+                .antMatchers(
+                        "/user/*",
+                        "/user-list")
+                .authenticated()
+                .antMatchers(
+                        "/invalidSession*")
+                .anonymous()
+                .antMatchers(
+                        "/",
+                        "/registration",
+                        "/api*",
+                        "/login*",
+                        "/logout*")
+                .permitAll()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/user-list")
-                    .failureUrl("/login?error=true")
-                    .permitAll()
+                .loginPage("/login")
+                .defaultSuccessUrl("/user-list")
+                .failureUrl("/login?error=true")
+                .permitAll()
                 .and()
                 .sessionManagement()
-                    .invalidSessionUrl("/invalidSession.html")
-                    .maximumSessions(1).sessionRegistry(sessionRegistry()).and()
-                    .sessionFixation().none()
+                .invalidSessionUrl("/invalidSession.html")
+                .maximumSessions(1).sessionRegistry(sessionRegistry()).and()
+                .sessionFixation().none()
                 .and()
                 .logout()
-                    .invalidateHttpSession(false)
-                    .logoutSuccessUrl("/logout.html?logSucc=true")
-                    .deleteCookies("JSESSIONID")
-                    .permitAll();
+                .invalidateHttpSession(false)
+                .logoutSuccessUrl("/logout.html?logSucc=true")
+                .deleteCookies("JSESSIONID")
+                .permitAll();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers( "/js/**", "/css/**", "/static/css/**", "/static/js/**", "/images/**", "/webjars/**", "/webjars/bootstrap/**");
+        web.ignoring().antMatchers("/js/**", "/css/**", "/static/css/**", "/static/js/**", "/images/**", "/webjars/**", "/webjars/bootstrap/**");
     }
 }

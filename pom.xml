@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vasiliev.test.userapp</groupId>
-    <artifactId>com.vasiliev.test.userapp</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <artifactId>user-manager</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -253,7 +253,7 @@
                                 </manifest>
                             </archive>
                             <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                                <descriptorRef>prod</descriptorRef>
                             </descriptorRefs>
                         </configuration>
                     </plugin>

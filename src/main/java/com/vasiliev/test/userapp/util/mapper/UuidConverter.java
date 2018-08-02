@@ -5,23 +5,31 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+/**
+ * The type Uuid converter.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @Component
 public class UuidConverter extends DozerConverter<String, UUID> {
 
+    /**
+     * Instantiates a new Uuid converter.
+     */
     public UuidConverter() {
         super(String.class, UUID.class);
     }
 
     @Override
     public UUID convertTo(String s, UUID uuid) {
-        if(s == null)
+        if (s == null)
             return null;
         return UUID.fromString(s);
     }
 
     @Override
     public String convertFrom(UUID uuid, String s) {
-        if(uuid == null)
+        if (uuid == null)
             return null;
         return uuid.toString();
     }

@@ -13,17 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The type User manage event controller.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @RestController
 @RequestMapping("/sse/user/event")
 public class UserManageEventController {
 
     private final List<SseEmitter> sses = new CopyOnWriteArrayList<>();
 
+    /**
+     * The User service.
+     */
     @Autowired
     UserService userService;
 
+    /**
+     * User events emitter sse emitter.
+     *
+     * @return the sse emitter
+     */
     @GetMapping
-    public SseEmitter userEventsEmitter(){
+    public SseEmitter userEventsEmitter() {
         SseEmitter emitter = new SseEmitter();
         this.sses.add(emitter);
 
@@ -33,14 +46,18 @@ public class UserManageEventController {
         return emitter;
     }
 
+    /**
+     * On memory info.
+     *
+     * @param memoryInfo the memory info
+     */
     @EventListener
     public void onMemoryInfo(UserManageEvent memoryInfo) {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.sses.forEach(emitter -> {
             try {
                 emitter.send(memoryInfo);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 deadEmitters.add(emitter);
             }
         });

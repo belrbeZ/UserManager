@@ -6,10 +6,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * The type Swagger 2 spring boot.
+ *
+ * @author Alexandr Vasiliev <alexandrvasilievby@gmail.com>
+ */
 @SpringBootApplication
 @EnableSwagger2
 public class Swagger2SpringBoot implements CommandLineRunner {
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws Exception the exception
+     */
     public static void main(String[] args) throws Exception {
         new SpringApplication(Swagger2SpringBoot.class).run(args);
     }
@@ -21,6 +32,9 @@ public class Swagger2SpringBoot implements CommandLineRunner {
         }
     }
 
+    /**
+     * The type Exit exception.
+     */
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
 
