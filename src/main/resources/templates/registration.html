@@ -11,6 +11,19 @@
     <title th:text="#{label.form.title}">form</title>
 </head>
 <body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home.html}" th:text="#{label.pages.home.title}">home</a>
+        </div>
+        <div class="">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/belrbeZ/UserManager">Visit on GitHub</a></li>
+                <li sec:authorize="isAuthenticated()" ><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div>
         <h1 th:text="#{label.form.title}">form</h1>
@@ -44,7 +57,7 @@
 </div>
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" th:src="@{/js/alert.js}" src="/static/js/alert.js"></script>
 <script type="text/javascript" th:src="@{/js/pwstrength.js}" src="/static/js/pwstrength.js"></script>
 <script type="text/javascript" th:src="@{/js/registerUser.js}" src="/static/js/registerUser.js"></script>
