@@ -13,9 +13,12 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#" th:text="#{label.pages.home.title}">home</a>
         </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
-        </ul>
+        <div class="">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/belrbeZ/UserManager">Visit on GitHub</a></li>
+                <li sec:authorize="isAuthenticated()" ><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 <div class="container">
@@ -115,7 +118,7 @@
         /}]];
     /*]]>*/
 </script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" th:src="@{/js/alert.js}" src="/static/js/alert.js"></script>
 <script type="text/javascript" th:src="@{/js/userListSse.js}" src="/static/js/userListSse.js"></script>
 

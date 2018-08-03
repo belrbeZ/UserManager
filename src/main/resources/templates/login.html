@@ -22,9 +22,10 @@
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/home.html}" th:text="#{label.pages.home.title}">home</a>
         </div>
-        <div sec:authorize="isAuthenticated()" class="">
+        <div class="">
             <ul class="nav navbar-nav navbar-right">
-                <li><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
+                <li><a href="https://github.com/belrbeZ/UserManager">Visit on GitHub</a></li>
+                <li sec:authorize="isAuthenticated()" ><a th:href="@{/logout}" th:text="#{label.pages.logout}">logout</a></li>
             </ul>
         </div>
     </div>

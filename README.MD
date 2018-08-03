@@ -3,7 +3,10 @@
 This is Spring Boot service, that running as a web application for user management.
 Try see launching app: https://user-manager-belrbez.herokuapp.com/
 
-Main features:
+### Source code
+https://github.com/belrbeZ/UserManager
+
+## Main features:
 - Full API documentation by url "/api" (free access; models docs too)
 - Both Web and REST APIs. REST API is implemented in accordance with Six guiding constraints that define a RESTful system
 - Registration and sign in (+logout) of user profiles
