@@ -157,6 +157,18 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <configuration>
+                                <source>1.8</source>
+                                <target>1.8</target>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>io.swagger</groupId>
@@ -232,29 +244,20 @@
                                 <goals>
                                     <goal>repackage</goal>
                                 </goals>
+                                <configuration>
+                                    <classifier>spring-boot</classifier>
+                                    <mainClass>
+                                        com.vasiliev.test.userapp.Swagger2SpringBoot
+                                    </mainClass>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
                     <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <groupId>com.heroku.sdk</groupId>
+                        <artifactId>heroku-maven-plugin</artifactId>
                         <configuration>
-                            <archive>
-                                <manifest>
-                                    <addClasspath>true</addClasspath>
-                                    <mainClass>com.tsystems.javaschool.rest.Swagger2SpringBoot</mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
+                            <appName>user-manager-1.0.0-RELEASE-spring-boot.jar</appName>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -262,3 +265,71 @@
         </profile>
     </profiles>
 </project>
+
+
+
+        <!--JUST one Jar-->
+        <!--<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>2.4.3</version>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>1.5.10.RELEASE</version>
+                </dependency>
+            </dependencies>
+            <configuration>
+                <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
+                <createDependencyReducedPom>true</createDependencyReducedPom>
+                &lt;!&ndash;<filters>
+                    <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>&ndash;&gt;
+            </configuration>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        &lt;!&ndash;<finalName>${project.name}-${project.version}</finalName>&ndash;&gt;
+                        &lt;!&ndash;<shadedArtifactAttached>false</shadedArtifactAttached>&ndash;&gt;
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <resource>META-INF/spring.handlers</resource>
+                            </transformer>
+                            <transformer implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
+                                <resource>META-INF/spring.factories</resource>
+                            </transformer>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <resource>META-INF/spring.schemas</resource>
+                            </transformer>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.vasiliev.test.userapp.Swagger2SpringBoot</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>-->
+        <!--<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>default-jar</id>
+                    &lt;!&ndash; put the default-jar in the none phase to skip it from being created &ndash;&gt;
+                    <phase>none</phase>
+                </execution>
+            </executions>
+        </plugin>-->
