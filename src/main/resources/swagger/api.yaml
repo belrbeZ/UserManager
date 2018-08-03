@@ -16,7 +16,7 @@ info:
     email: alexandrvasilievby@gmail.com
     url: https://github.com/belrbeZ
 
-host: localhost:8000
+host: localhost:8080
 #basePath: /usermanagement
 
 schemes:

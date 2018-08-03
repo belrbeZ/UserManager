@@ -32,6 +32,7 @@ public class UserEntity {
 
     private String phoneNumber;
 
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(length = 60)

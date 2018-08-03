@@ -1,10 +1,11 @@
 ## pb_service_vdvadapter
 
-This is Spring Boot service, that running as a web service.
+This is Spring Boot service, that running as a web application for user management.
+Try see launching app: https://user-manager-belrbez.herokuapp.com/
 
 Main features:
 - Full API documentation by url "/api" (free access; models docs too)
-- Both Web and REST APIs
+- Both Web and REST APIs. REST API is implemented in accordance with Six guiding constraints that define a RESTful system
 - Registration and sign in (+logout) of user profiles
 - Registration form and BE are both support validation of email and password by configurable validation rules (includes existing email)
 - Login process provide validation of email (is exist) and credentials checks
@@ -17,7 +18,7 @@ Main features:
 - All pages which can manage data have custom modal alert messages to make it simplier to understand application events
 - Tests added and passed (with json data initialization)
 
-##Technologies
+## Technologies
 Although Java is the main technology used for the software, a couple of libraries and frameworks are used to improve the development process:
 - [Spring Boot](https://projects.spring.io/spring-boot/): Spring Boot Framework
 - [Spring Security](https://projects.spring.io/spring-security/): Spring Security is a powerful and highly customizable authentication and access-control framework.
@@ -28,12 +29,20 @@ Although Java is the main technology used for the software, a couple of librarie
 - [Dozer](https://dozer.sourceforge.net/): Mapper that recursively copies data from one object to another
 - [ThymeLeaf](https://www.thymeleaf.org/): Thymeleaf server-side Java template engine for both web and standalone environments for modern-day HTML5 JVM web development
 
-##Setup a local development environment
+## Setup a local development environment
 It is a Maven project, you can simply open it via Eclipse or IDEA, configure start of spring boot application. Change default configuration parameters, in /resources/application.properties
   
-##Regeneration of swagger server part:
-###To build component run:
+## Regeneration of swagger server part and building an executable jar file:
+### To build app run:
     mvn clean package
     
-    java -jar user-manager-xxx.jar
-    
+### To launch app run:
+
+You can just use already generated "user-manager-x.x.x-RELEASE.jar" in a root source of the project.
+And try to use just java command (jvm need):
+
+    java -jar user-manager-x.x.x-RELEASE.jar
+
+## Improvements and problems:
+- Possible bugs with some extra validation error handling on UI
+- Increase performance with updating not whole user list, but only necessary rows (Now messages from server about events already contain ID and type of event)
