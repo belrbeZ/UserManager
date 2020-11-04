@@ -1,4 +1,4 @@
-## pb_service_vdvadapter
+## user-manager
 
 This is Spring Boot service, that running as a web application for user management.
 Try see launching app: https://user-manager-belrbez.herokuapp.com/
